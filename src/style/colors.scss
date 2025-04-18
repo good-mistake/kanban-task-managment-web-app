@@ -1,0 +1,41 @@
+$color-Main-Purple: rgb(99, 95, 199);
+$color-Main-Purple-Hover: rgb(168, 164, 255);
+$color-Black: rgb(0, 1, 18);
+$color-Very-Dark-Grey-Dark-BG: rgb(32, 33, 44);
+$color-Dark-Grey: rgb(43, 44, 55);
+$color-Lines-Dark: rgb(62, 63, 78);
+$color-Medium-Grey: rgb(130, 143, 163);
+$color-Lines-Light-blue: rgb(228, 235, 250);
+$color-Light-Grey-Light-BG: rgb(244, 247, 253);
+$color-Lines-Light: rgb(255, 255, 255);
+$color-Red: rgb(234, 85, 85);
+$color-Red-Hover: rgb(255, 152, 152);
+:root {
+  --color-main-purple: rgb(99, 95, 199);
+  --color-main-purple-hover: rgb(168, 164, 255);
+  --color-black: rgb(0, 1, 18);
+  --color-very-dark-grey-bg: rgb(32, 33, 44);
+  --color-dark-grey: rgb(43, 44, 55);
+  --color-lines-dark: rgb(62, 63, 78);
+  --color-medium-grey: rgb(130, 143, 163);
+  --color-lines-light-blue: rgb(228, 235, 250);
+  --color-light-grey-bg: rgb(244, 247, 253);
+  --color-lines-light: rgb(255, 255, 255);
+  --color-red: rgb(234, 85, 85);
+  --color-red-hover: rgb(255, 152, 152);
+}
+
+[data-theme="dark"] {
+  --color-main-purple: rgb(168, 164, 255);
+  --color-main-purple-hover: rgb(99, 95, 199);
+  --color-black: rgb(255, 255, 255);
+  --color-very-dark-grey-bg: rgb(12, 13, 23);
+  --color-dark-grey: rgb(22, 23, 33);
+  --color-lines-dark: rgb(40, 41, 58);
+  --color-medium-grey: rgb(200, 210, 230);
+  --color-lines-light-blue: rgb(60, 70, 90);
+  --color-light-grey-bg: rgb(20, 22, 30);
+  --color-lines-light: rgb(0, 0, 0);
+  --color-red: rgb(255, 100, 100);
+  --color-red-hover: rgb(220, 60, 60);
+}

@@ -1,0 +1,105 @@
+@import "./colors.scss";
+@import "./font.scss";
+
+@mixin checkbox-wrapper($idle, $hover, $completed) {
+  width: 350px;
+  height: 40px;
+  @include Body-M;
+  background-color: $idle;
+  border-radius: 4px;
+  transition: 0.3s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  &:hover {
+    background-color: rgba($hover, 0.25);
+  }
+
+  input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid $idle;
+    background: transparent;
+    cursor: pointer;
+    transition: 0.3s;
+    position: relative;
+    margin-right: 8px;
+
+    &:hover {
+      border-color: $hover;
+    }
+
+    &:checked {
+      background-color: $completed;
+      border-color: $completed;
+
+      &::after {
+        content: "✔";
+        font-size: 7px;
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+}
+
+.checkboxContainer:has(input[type="checkbox"]:checked) {
+  opacity: 0.5;
+}
+
+@mixin text-field($idle, $active, $error) {
+  width: 350px;
+  height: 40px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid rgb($idle);
+  border-radius: 4px;
+  background-color: transparent;
+  outline: none;
+  transition: 0.3s;
+
+  &:focus {
+    border-color: rgba($active, 0.5);
+    box-shadow: 0 0 5px rgba($active, 0.5);
+    color: $color-Black;
+  }
+
+  &.error {
+    border-color: $error;
+    box-shadow: 0 0 5px rgba($error, 0.5);
+  }
+}
+@mixin dropdown($idle, $active) {
+  width: 350px;
+  height: 40px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid $idle;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: 0.3s;
+  position: relative;
+
+  &:hover,
+  &:focus {
+    border-color: $active;
+    box-shadow: 0 0 5px rgba($active, 0.5);
+  }
+
+  select {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    font-size: inherit;
+    outline: none;
+    cursor: pointer;
+  }
+}

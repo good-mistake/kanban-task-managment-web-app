@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+@mixin Heading-XL {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 30px;
+}
+@mixin Heading-L {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 23px;
+}
+@mixin Heading-M {
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 19px;
+}
+@mixin Heading-S {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 30px;
+  letter-spacing: 2.4px;
+}
+@mixin Body-L {
+  font-size: 13px;
+  font-weight: medium;
+  line-height: 23px;
+}
+@mixin Body-M {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 15px;
+}

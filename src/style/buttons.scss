@@ -1,0 +1,76 @@
+@import "./font.scss";
+@import "./colors.scss";
+@mixin Button-Light-Primary-L {
+  @include Heading-M;
+  cursor: pointer;
+  text-align: center;
+  color: var(--color-lines-light);
+  background-color: var(--color-main-purple);
+  border-radius: 24px;
+  width: 255px;
+  height: 48px;
+
+  &:hover {
+    background-color: var(--color-main-purple-hover);
+  }
+}
+
+@mixin Button-Light-Primary-S {
+  @include Body-M;
+  text-align: center;
+  color: var(--color-lines-light);
+  background-color: var(--color-main-purple);
+  border-radius: 20px;
+  width: 255px;
+  height: 40px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-main-purple-hover);
+  }
+}
+
+@mixin Button-Light-Secondary {
+  @include Body-M;
+  text-align: center;
+  color: var(--color-main-purple);
+  background-color: rgba(var(--color-main-purple), 0.1);
+  border-radius: 20px;
+  width: 255px;
+  height: 40px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(var(--color-main-purple), 0.25);
+  }
+}
+
+@mixin Button-Light-Destructive {
+  @include Body-M;
+  text-align: center;
+  color: var(--color-lines-light);
+  background-color: var(--color-red);
+  border-radius: 20px;
+  width: 255px;
+  height: 40px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-red-hover);
+  }
+}
+
+@mixin Button-Dark-Secondary {
+  @include Body-M;
+  text-align: center;
+  color: var(--color-main-purple);
+  background-color: var(--color-lines-light);
+  border-radius: 20px;
+  width: 255px;
+  height: 40px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(var(--color-lines-light), 0.8);
+  }
+}
