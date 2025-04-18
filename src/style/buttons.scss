@@ -1,5 +1,5 @@
-@import "./font.scss";
-@import "./colors.scss";
+@use "./font.scss";
+@use "./colors.scss";
 @mixin Button-Light-Primary-L {
   @include Heading-M;
   cursor: pointer;

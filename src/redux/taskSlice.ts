@@ -38,37 +38,14 @@ const taskSlice = createSlice({
     },
 
     deleteTask: (state, action: PayloadAction<string | number>) => {
-      for (const board of state.boards) {
-        for (const column of board.columns) {
-          const taskIndex = column.tasks.findIndex((task) => task.id === id);
-          if (taskIndex !== -1) {
-            const task = column.tasks[taskIndex];
-            task.title = title.trim();
-            task.description = description.trim();
-            task.subtasks = subtasks.map((s: Subtask) => ({
-              ...s,
-              title: s.title.trim(),
-            }));
-            task.status = status;
-            column.tasks.splice(taskIndex, 1);
-
-            const newColumn = board.columns.find((col) => col.name === status);
-            if (newColumn) {
-              newColumn.tasks.push(task);
-            }
-            state.error = null;
-            localStorage.setItem("boards", JSON.stringify(state.boards));
-            return;
-          }
-        }
-      }
-      state.error = "Task not found.";
+      state.tasks = state.tasks.filter((t) => t.id !== action.payload);
+      localStorage.setItem("tasks", JSON.stringify(state.tasks));
     },
     selectTask: (state, action) => {
       state.selectedTask = action.payload;
     },
-    setSelectedTask: (state, action: PayloadAction<Task | null>) => {
-      state.selectedTask = action.payload;
+    setSelectedTask: (state) => {
+      state.selectedTask = null;
     },
     clearSelectedTask: (state) => {
       state.selectedTask = null;

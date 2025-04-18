@@ -1,8 +1,8 @@
-@import "./colors.scss";
-@import "./font.scss";
-@import "./buttons.scss";
-@import "./others.scss";
-@import "./reset.scss";
+@use "./colors.scss";
+@use "./font.scss";
+@use "./buttons.scss";
+@use "./others.scss";
+@use "./reset.scss";
 :root {
   --bg-color: rgba(228, 235, 250, 0.5);
   --empty-color: rgba(228, 235, 250, 1);
