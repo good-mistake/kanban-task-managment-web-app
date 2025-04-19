@@ -7,6 +7,13 @@ import Editboard from "./Editboard";
 import Deleteboard from "./Deleteboard";
 import Createtask from "./Createtask";
 import { useBodyModalClass } from "./useBodyModalClass";
+import Createboard from "./Createboard";
+import { setSelectedBoardId } from "@/redux/boardSlice";
+import { useDispatch } from "react-redux";
+import { useIsMobile } from "./useIsMobile";
+import { toggleTheme } from "@/redux/themeSlice";
+import Modalwrapper from "./Modalwrapper";
+
 type ModalType = "edit" | "delete" | "create" | null;
 
 const Header = ({
@@ -20,11 +27,14 @@ const Header = ({
   setActiveModal: (modal: ModalType | null) => void;
   activeModal: ModalType;
 }) => {
+  const dispatch = useDispatch();
   const mode = useSelector((state: RootState) => state.theme.mode);
-
-  const optionsRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
+  const optionsMenuRef = useRef<HTMLDivElement>(null);
+  const boardNameRef = useRef<HTMLDivElement>(null);
   const [showOptions, setShowOptions] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
+  const [showCreateBoardModal, setShowCreateBoardModal] = useState(false);
+  const [showNameOptions, setShowNameOptions] = useState(false);
 
   const boards = useSelector((state: RootState) => state.board.boards);
   const selectedBoardId = useSelector(
@@ -33,67 +43,182 @@ const Header = ({
   const selectedBoard = boards.find((b) => b.id === selectedBoardId);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        optionsRef.current &&
-        !optionsRef.current.contains(event.target as Node)
-      ) {
+      const target = event.target as Node;
+
+      if (boardNameRef.current && !boardNameRef.current.contains(target)) {
+        setShowNameOptions(false);
+      }
+
+      if (optionsMenuRef.current && !optionsMenuRef.current.contains(target)) {
         setShowOptions(false);
       }
     };
 
-    if (showOptions) {
+    if (showOptions || showNameOptions) {
       document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
     }
+  }, [showOptions, showNameOptions]);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showOptions]);
   useBodyModalClass(
     activeModal === "create" ||
       activeModal === "edit" ||
       activeModal === "delete"
   );
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 600);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
   return (
     <>
       {isMobile ? (
-        <header className={`header  ${isModalOpen ? "modalOpen" : ""}`}>
-          <div className="logoContainer">
-            <Image
-              width={24}
-              height={25}
-              alt="logo"
-              src={`./assets/logo-mobile.svg`}
-              className="logo"
-            />
-          </div>{" "}
-          <h1>
-            {selectedBoard?.name ? (
-              selectedBoard.name
-            ) : (
-              <div className="boardName">
-                <p>Choose A Board or create one </p>
-                <Image
-                  width={24}
-                  height={25}
-                  alt="logo"
-                  src={`./assets/icon-chevron-down.svg`}
-                  className="logo"
-                />
+        <header className={`headerMobile  ${isModalOpen ? "modalOpen" : ""}`}>
+          <div className="left">
+            {" "}
+            <div className="logoContainer">
+              <Image
+                width={24}
+                height={25}
+                alt="logo"
+                src={`./assets/logo-mobile.svg`}
+                className="logo"
+              />
+            </div>
+            <h1>
+              <div className="boardName" ref={boardNameRef}>
+                <div onClick={() => setShowNameOptions((prev) => !prev)}>
+                  <p>
+                    {selectedBoard?.name
+                      ? selectedBoard?.name
+                      : "Choose A Board"}
+                  </p>
+                  <Image
+                    width={16}
+                    height={8}
+                    alt="logo"
+                    src={`./assets/icon-chevron-down.svg`}
+                    className="logo"
+                  />
+                </div>
+                {showNameOptions && (
+                  <Modalwrapper onClose={() => setShowNameOptions(false)}>
+                    <div
+                      className={` ${showNameOptions ? "Open" : "Closed"}`}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <ul>
+                        <li>ALL BOARDS ({boards.length})</li>
+                        {boards.map((board) => {
+                          return (
+                            <li
+                              key={board.id}
+                              onClick={() => {
+                                dispatch(setSelectedBoardId(board.id));
+                                setShowNameOptions(false);
+                              }}
+                              className={
+                                selectedBoardId === board.id
+                                  ? "active  nameAndImg"
+                                  : " nameAndImg"
+                              }
+                            >
+                              <Image
+                                width={16}
+                                height={16}
+                                alt="logo"
+                                src={`./assets/icon-board.svg`}
+                                className="logo"
+                              />
+                              {board.name}
+                            </li>
+                          );
+                        })}
+                        <li
+                          className="createBoard"
+                          onClick={() => setShowCreateBoardModal(true)}
+                        >
+                          <Image
+                            width={16}
+                            height={16}
+                            alt="logo"
+                            src={`./assets/icon-board.svg`}
+                            className="logo"
+                          />
+                          Create New Board
+                        </li>
+                        <li className="themeContainer">
+                          <Image
+                            src={"./assets/icon-light-theme.svg"}
+                            width={19}
+                            height={18}
+                            alt="light"
+                          />
+                          <div
+                            className={`themeSwitch ${
+                              mode === "dark" ? "dark" : ""
+                            }`}
+                            onClick={() => dispatch(toggleTheme())}
+                          >
+                            <button className="switchHandle"></button>
+                          </div>
+                          <Image
+                            src={"./assets/icon-dark-theme.svg"}
+                            width={15}
+                            height={15}
+                            alt="dark"
+                          />
+                        </li>
+                      </ul>
+                    </div>
+                  </Modalwrapper>
+                )}
+              </div>
+            </h1>
+          </div>
+          <div className="right">
+            {selectedBoard && (
+              <div className="headerActions">
+                <div className="btnAndMenu">
+                  <button
+                    className="addTaskBtn"
+                    onClick={() => setActiveModal("create")}
+                  >
+                    <Image
+                      src={"./assets/icon-add-task-mobile.svg"}
+                      alt="ellipsis"
+                      width={12}
+                      height={12}
+                    />{" "}
+                  </button>
+                  <div className="boardMenu" ref={optionsMenuRef}>
+                    <button onClick={() => setShowOptions((prev) => !prev)}>
+                      <Image
+                        src={"./assets/icon-vertical-ellipsis.svg"}
+                        alt="ellipsis"
+                        width={4}
+                        height={16}
+                      />
+                    </button>
+                    <div
+                      className={`mobileName ${
+                        showOptions ? "Open" : "Closed"
+                      }`}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <button onClick={() => setActiveModal("edit")}>
+                        Edit Board
+                      </button>
+                      <button
+                        onClick={() => setActiveModal("delete")}
+                        className="deleteBtn"
+                      >
+                        Delete Board
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
-          </h1>
+          </div>
         </header>
       ) : (
         <header
@@ -120,8 +245,8 @@ const Header = ({
                 >
                   + Add New Task
                 </button>
-                <div className="boardMenu" ref={optionsRef}>
-                  <button onClick={() => setShowOptions(true)}>
+                <div className="boardMenu" ref={optionsMenuRef}>
+                  <button onClick={() => setShowOptions((prev) => !prev)}>
                     <Image
                       src={"./assets/icon-vertical-ellipsis.svg"}
                       alt="ellipsis"
@@ -130,7 +255,7 @@ const Header = ({
                     />
                   </button>
                   {showOptions && (
-                    <div>
+                    <div onClick={(e) => e.stopPropagation()}>
                       <button onClick={() => setActiveModal("edit")}>
                         Edit Board
                       </button>
@@ -146,16 +271,19 @@ const Header = ({
               </div>
             </div>
           )}
-          {activeModal === "edit" && (
-            <Editboard onClose={() => setActiveModal(null)} />
-          )}
-          {activeModal === "delete" && (
-            <Deleteboard onClose={() => setActiveModal(null)} />
-          )}
-          {activeModal === "create" && (
-            <Createtask onClose={() => setActiveModal(null)} />
-          )}
         </header>
+      )}
+      {activeModal === "edit" && (
+        <Editboard onClose={() => setActiveModal(null)} />
+      )}
+      {activeModal === "delete" && (
+        <Deleteboard onClose={() => setActiveModal(null)} />
+      )}
+      {activeModal === "create" && (
+        <Createtask onClose={() => setActiveModal(null)} />
+      )}{" "}
+      {showCreateBoardModal && (
+        <Createboard onClose={() => setShowCreateBoardModal(false)} />
       )}
     </>
   );

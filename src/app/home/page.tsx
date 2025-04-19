@@ -8,13 +8,11 @@ import Detail from "@/components/Detail";
 import Createboard from "@/components/Createboard";
 import { Task } from "@/components/types";
 import Editboard from "@/components/Editboard";
-
 const Page = () => {
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [showCreateBoard, setShowCreateBoard] = useState(false);
   const [showEditBoard, setShowEditBoard] = useState(false);
-
   const selectedBoardId = useSelector(
     (state: RootState) => state.board.selectedBoardId
   );
@@ -79,10 +77,10 @@ const Page = () => {
                           </div>
                         );
                       })}
-                    </div>{" "}
+                    </div>
                   </div>
                 ))}
-              </div>{" "}
+              </div>
               <div
                 className="col emptyColumn"
                 onClick={() => setShowEditBoard(true)}

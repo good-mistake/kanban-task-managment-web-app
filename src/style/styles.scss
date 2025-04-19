@@ -31,6 +31,7 @@
   --color-red-hover: rgb(255, 152, 152);
   --color-main-purple-hover-reverse: rgb(168, 164, 255);
   --border-color1: rgba(130, 143, 163, 0.25);
+  --color-modal: rgba(0, 0, 0, 0.6);
 }
 
 [data-theme="dark"] {
@@ -42,6 +43,8 @@
   --color-sidebar-list: white;
   --header-bg: #2b2c37;
   --sidebar-bg: #2b2c37;
+  --color-modal: rgba(0, 0, 0, 0.2);
+
   --color-main-purple-to-white: rgb(255, 255, 255);
   --color-main-purple-to-darker-purple: #635fc7;
   --color-main-purple-consistant: rgb(99, 95, 199);
@@ -66,7 +69,7 @@ button {
   cursor: pointer;
 }
 body.modal-open {
-  overflow: hidden;
+  overflow: hidden !important;
 }
 
 body {
@@ -85,6 +88,7 @@ body {
     box-shadow: var(--box-shadow);
     display: flex;
     align-items: center;
+
     &.sidebarOpen {
       z-index: 2;
 
@@ -98,7 +102,6 @@ body {
     }
     &.sidebarClosed {
       z-index: 4;
-
       .headerActions {
         margin-left: 0px;
         padding: 0 20px;
@@ -124,6 +127,7 @@ body {
         @include Heading-XL;
         color: var(--color-black);
       }
+
       .btnAndMenu {
         display: flex;
         align-items: center;
@@ -191,6 +195,10 @@ body {
       .boards {
         display: flex;
         align-items: flex-start;
+        @media (max-width: 600px) {
+          margin-top: 95px;
+          margin-left: 15px;
+        }
         .emptyColumn {
           margin-top: 50px;
           min-height: 815px;
@@ -271,6 +279,9 @@ body {
         justify-content: center;
         align-items: center;
         height: 100vh;
+        @media (max-width: 600px) {
+          flex-direction: column;
+        }
         p {
           letter-spacing: 2px;
         }
@@ -280,6 +291,9 @@ body {
           color: var(--color-main-purple);
           p {
             @include Heading-M;
+          }
+          @media (max-width: 600px) {
+            margin-top: 5px;
           }
         }
       }
@@ -473,7 +487,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: var(--color-modal);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -498,6 +512,13 @@ body {
   gap: 1rem;
   max-height: 95vh;
   z-index: 1000;
+  @media (max-width: 600px) {
+    width: 90%;
+    max-width: 100%;
+    max-height: none;
+    min-height: 60vh;
+    justify-content: center;
+  }
   h3 {
     @include Heading-L;
     color: var(--color-black);
@@ -557,12 +578,19 @@ body {
     transition: background-color 0.2s ease;
     @include Body-L;
     margin: 10px 0;
+    @media (max-width: 600px) {
+      padding: 1rem 1.2rem;
+      border-radius: 30px;
+    }
     &:not(.removeBtn) {
       &:nth-of-type(1) {
         color: #333;
         margin-bottom: 6px;
         background-color: var(--color-main-purple-to-white);
         color: var(--color-main-purple-consistant);
+        @media (max-width: 600px) {
+          margin-bottom: 16px;
+        }
       }
     }
     &:nth-of-type(2) {
@@ -889,4 +917,217 @@ body {
   right: 40;
   pointer-events: none;
   @include Body-L;
+}
+.headerMobile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--header-bg);
+  min-height: 78px;
+  border-bottom: 1px solid var(--border-sh);
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 11;
+  .left {
+    display: flex;
+    align-items: center;
+    .logoContainer {
+      img {
+        margin: 0 15px 0px 15px;
+      }
+    }
+  }
+  .right {
+    .headerActions {
+      .btnAndMenu {
+        display: flex;
+        align-items: center;
+        .addTaskBtn {
+          background-color: var(--color-main-purple-hover);
+          border-radius: 24px;
+          padding: 10px 16px;
+          margin-right: 15px;
+          img {
+            max-width: max-content;
+            height: auto;
+          }
+        }
+        .boardMenu {
+          margin-right: 15px;
+          margin-bottom: 3px;
+        }
+      }
+    }
+  }
+  .boardName,
+  .boardMenu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    .modal {
+      .modalContent {
+        width: 70%;
+        padding: 0;
+      }
+    }
+    > div {
+      &:first-child {
+        display: flex;
+        align-items: center;
+      }
+    }
+    ul {
+      width: 100%;
+      padding: 20px 0;
+      li {
+        @include Heading-M;
+        height: 48px;
+        border-radius: 0px 25px 25px 0px;
+        display: flex;
+        padding-left: 24px;
+        align-items: center;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        cursor: pointer;
+        width: 80%;
+        img {
+          margin: 0;
+          margin-right: 8px;
+        }
+        &.active {
+          background-color: var(--color-main-purple-consistant);
+          color: var(--color-sidebar-list);
+
+          img {
+            filter: brightness(0) invert(1);
+          }
+          &:hover {
+            background-color: rgba(var(--color-main-purple2), 0.6);
+            color: var(--color-pure-white);
+          }
+        }
+        &:hover {
+          &:not(:first-child):not(:last-child) {
+            background-color: var(--color-main-purple-to-white);
+            color: var(--color-main-purple-consistant);
+            img {
+              filter: invert(27%) sepia(40%) saturate(749%) hue-rotate(219deg)
+                brightness(60%) contrast(55%);
+            }
+          }
+        }
+        &:first-child {
+          @include Body-M;
+          letter-spacing: 2.5px;
+        }
+      }
+      .themeContainer {
+        display: flex;
+        align-items: center;
+        align-self: center;
+        justify-content: center;
+        width: 90%;
+        height: 48px;
+        background-color: var(--color-light-grey-bg);
+        border-radius: 6px;
+        padding-left: 0;
+        margin: 15px auto 15px auto;
+        .themeSwitch {
+          width: 40px;
+          height: 20px;
+          background: var(--color-main-purple-consistant);
+          border-radius: 12px;
+          position: relative;
+          display: flex;
+          align-items: center;
+          padding: 2px;
+          cursor: pointer;
+          transition: background 0.3s;
+          &:hover {
+            background-color: var(--color-main-purple-hover-reverse);
+          }
+        }
+        img {
+          margin: 0 14px;
+        }
+        .switchHandle {
+          width: 14px;
+          height: 14px;
+          padding: 0;
+          background: var(--color-pure-white);
+          border: none;
+          border-radius: 50%;
+          margin: 0 0px;
+          margin-bottom: 1px;
+          display: flex;
+          align-items: center;
+          transition: transform 0.3s;
+        }
+
+        .dark .switchHandle {
+          transform: translateX(19px);
+        }
+      }
+    }
+    .mobileName {
+      position: absolute;
+      top: 32px;
+      right: 0;
+      background-color: var(--color-lines-light);
+      height: auto;
+      min-width: 142px;
+      border-radius: 8px;
+      padding: 10px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
+        rgba(17, 17, 26, 0.1) 0px 0px 8px;
+      z-index: 111;
+      opacity: 0;
+      scale: 0.9;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      overflow: scroll;
+      &.Open {
+        opacity: 1;
+        scale: 1;
+        pointer-events: auto;
+      }
+      .createBoard {
+        display: flex;
+        align-items: center;
+        color: var(--color-medium-grey);
+      }
+      > div,
+      button {
+        @include Body-L;
+        color: var(--color-dark-grey);
+        padding: 6px 0;
+        width: 100%;
+        cursor: pointer;
+        text-align: left;
+        &.deleteBtn {
+          color: var(--color-red);
+          &:hover {
+            color: var(--color-red-hover);
+          }
+        }
+      }
+    }
+    p {
+      @include Heading-L;
+      color: var(--color-black);
+    }
+    img {
+      margin: 0;
+      margin-top: 4px;
+      margin-left: 6px;
+    }
+  }
 }

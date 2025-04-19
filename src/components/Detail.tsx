@@ -9,7 +9,7 @@ import EditTask from "./EditTask";
 import DeleteTask from "./DeleteTask";
 import { createPortal } from "react-dom";
 import { Task, Column, ModalProps } from "./types";
-
+import { useIsMobile } from "./useIsMobile";
 interface DetailProps extends ModalProps {
   task: Task;
   columns: Column[];
@@ -20,7 +20,7 @@ const Detail: React.FC<DetailProps> = ({ onClose, task, columns }) => {
   const [showOptions, setShowOptions] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [dropdownStyle, setDropdownStyle] = useState({ top: 0, left: 0 });
-
+  const isMobile = useIsMobile();
   const [activeModal, setActiveModal] = useState<"detail" | "edit" | "delete">(
     "detail"
   );
@@ -89,8 +89,12 @@ const Detail: React.FC<DetailProps> = ({ onClose, task, columns }) => {
       if (buttonRef.current && showOptions) {
         const rect = buttonRef.current.getBoundingClientRect();
         setDropdownStyle({
-          top: rect.bottom + window.scrollY + 14,
-          left: rect.right - 90 + window.scrollX,
+          top: isMobile
+            ? rect.bottom + window.scrollY - 10
+            : rect.bottom + window.scrollY + 14,
+          left: isMobile
+            ? rect.right - 210 + window.scrollX
+            : rect.right - 110 + window.scrollX,
         });
       }
     };
