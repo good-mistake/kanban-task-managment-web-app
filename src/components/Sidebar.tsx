@@ -34,6 +34,7 @@ const Sidebar = ({
       dispatch(loadBoards(JSON.parse(stored)));
     } else {
       const boardsWithIds = initialData.boards.map((board) => ({
+        id: crypto.randomUUID(),
         name: board.name,
         columns: board.columns.map((column) => ({
           name: column.name,
