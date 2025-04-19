@@ -1,5 +1,5 @@
-@use "./colors.scss";
-@use "./font.scss";
+@import "./colors.scss";
+@import "./font.scss";
 
 @mixin checkbox-wrapper($idle, $hover, $completed) {
   width: 350px;

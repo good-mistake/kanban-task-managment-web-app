@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import themeReducer from "./themeSlice";
 import boardReducer from "./boardSlice";
-import taskReducer from "./taskSlice";
 import {
   persistStore,
   persistReducer,
@@ -18,13 +17,11 @@ const persistConfig = {
   storage,
 };
 const persistedBoardReducer = persistReducer(persistConfig, boardReducer);
-const presistedTaskReducer = persistReducer(persistConfig, taskReducer);
 
 export const store = configureStore({
   reducer: {
     theme: themeReducer,
     board: persistedBoardReducer,
-    task: presistedTaskReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
